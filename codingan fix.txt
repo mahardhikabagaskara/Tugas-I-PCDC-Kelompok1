@@ -1,0 +1,44 @@
+I = imread("kelompok1.jpg"); //menyimpan gambar kelompok1.jpg ke dalam variabel I
+imshow(I) // menampilkan gambar I
+R = I(:,:,1); //menyimpan citra keabuan merah
+G = I(:,:,2); //menyimpan citra keabuan hijau
+B = I(:,:,3); //menyimpan citra keabuan biru
+abu = (R+G+B)/3; //mengambil nilai rata-rata dari merah, hijau, dan biru
+imshow(abu) //menampilkan citra
+
+G1 = 0.1*log(abu+1); //melakukan transformasi logaritmik dengan konstanta 0.1
+imshow(G1); //menampilkan citra G1
+hist(G1); //menampilkan histogtam G1
+G2 = 0.3*log(abu+1); //melakukan transformasi logaritmik dengan konstanta 0.3
+imshow(G2); //menampilkan citra G2
+hist(G2); //menampilkan histogtam G2
+G3 = 0.009*log(abu+1); //melakukan transformasi logaritmik dengan konstanta 0.009
+imshow(G3); //menampilkan citra G3
+hist(G3); //menampilkan histogtam G3
+
+abu_a = abu+80; //menambah citra keabuan dengan nilai 80
+imshow(abu_a); //menampilkan citra abu_a
+abu_b = abu-80; //mengurangi citra keabuan dengan nilai 80
+imshow(abu_b); //menampilkan citra abu_b
+
+//filtering sobel untuk citra abu_a
+for i=1:size(abu_a,1)-2
+for j=1:size(abu_a,2)-2
+Gx=((2*abu_a(i+2,j+1)+abu_a(i+2,j)+abu_a(i+2,j+2))-(2*abu_a(i,j+1)+abu_a(i,j)+abu_a(i,j+2)));
+Gy=((2*abu_a(i+1,j+2)+abu_a(i,j+2)+abu_a(i+2,j+2))-(2*abu_a(i+1,j)+abu_a(i,j)+abu_a(i+2,j)));
+B(i,j)=abs(Gx)+abs(Gy);
+B(i,j)=sqrt(Gx.^2+Gy.^2);
+end
+end
+figure,imshow(B); title('Sobel gradient'); //menampilkan citra yang sudah menggunakan filtering sobel
+
+//filtering sobel untuk citra abu_b
+for i=1:size(abu_b,1)-2
+for j=1:size(abu_b,2)-2
+Gx=((2*abu_b(i+2,j+1)+abu_b(i+2,j)+abu_b(i+2,j+2))-(2*abu_b(i,j+1)+abu_b(i,j)+abu_b(i,j+2)));
+Gy=((2*abu_b(i+1,j+2)+abu_b(i,j+2)+abu_b(i+2,j+2))-(2*abu_b(i+1,j)+abu_b(i,j)+abu_b(i+2,j)));
+Z(i,j)=abs(Gx)+abs(Gy);
+Z(i,j)=sqrt(Gx.^2+Gy.^2);
+end
+end
+figure,imshow(Z); title('Sobel gradient'); //menampilkan citra yang sudah menggunakan filtering sobel
